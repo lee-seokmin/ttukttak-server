@@ -1,0 +1,14 @@
+# DB는 compose.yaml의 Postgres를 Docker Compose 연동이 자동으로 띄우고 연결해요.
+spring:
+  docker:
+    compose:
+      skip:
+        in-tests: false
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.springframework.security: debug
