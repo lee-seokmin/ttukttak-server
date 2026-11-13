@@ -1,0 +1,40 @@
+name: 의존성 검토
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  # main: 의존성 목록을 올려서 비교 기준을 만들어요.
+  # PR: 그 브랜치의 목록을 올리고 main과 비교해요.
+  # ponytail: fork PR은 토큰이 읽기 전용이라 목록을 못 올려서 건너뛰어요.
+  #   외부 기여가 늘면 PR에서는 목록을 artifact로 남기고, 별도 워크플로우에서 올리는 방식으로 바꿔요.
+  review:
+    if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write # Gradle 의존성 목록 올리기 (GitHub가 build.gradle을 직접 읽지 못해요)
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: gradle/actions/dependency-submission@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
+
+      - if: ${{ github.event_name == 'pull_request' }}
+        uses: actions/dependency-review-action@v5
+        with:
+          fail-on-severity: high
+          retry-on-snapshot-warnings: true

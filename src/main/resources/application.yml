@@ -9,3 +9,5 @@ spring:
       hibernate.jdbc.time_zone: UTC
   jackson:
     time-zone: Asia/Seoul
+    deserialization:
+      fail-on-unknown-properties: true
