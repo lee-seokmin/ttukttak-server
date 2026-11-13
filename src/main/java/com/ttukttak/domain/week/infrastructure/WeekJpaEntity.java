@@ -71,34 +71,39 @@ class WeekJpaEntity {
     @Column(nullable = false, columnDefinition = "text")
     private String notes;
 
+    // UPDATE 문에서 빠져요. 더하기는 WeekJpaRepository.addPresses만 해서 동시에 눌러도 잃지 않아요.
+    @Column(updatable = false)
     private long presses;
 
     static WeekJpaEntity from(Week week) {
         WeekJpaEntity entity = new WeekJpaEntity();
         entity.id = week.getId();
-        entity.type = week.getType();
-        entity.round = week.getRound();
-        entity.code = week.getCode();
-        entity.title = week.getTitle();
-        entity.announcement = week.getAnnouncement();
-        entity.intent = week.getIntent();
-        entity.rule = week.getRule();
-        entity.constraints = week.getConstraints();
-        entity.difficulty = week.getDifficulty();
-        entity.status = week.getStatus();
-        Examples examples = week.getExamples();
-        if (examples != null) {
-            entity.exampleBeginner = examples.beginner();
-            entity.exampleRegular = examples.regular();
-            entity.exampleExpert = examples.expert();
-        }
-        entity.opensAt = week.getOpensAt();
-        entity.submissionClosesAt = week.getSubmissionClosesAt();
-        entity.votingClosesAt = week.getVotingClosesAt();
-        entity.resultsAt = week.getResultsAt();
-        entity.notes = week.getNotes();
         entity.presses = week.getPresses();
+        entity.overwrite(week);
         return entity;
+    }
+
+    /** id와 presses만 빼고 덮어써요. */
+    void overwrite(Week week) {
+        type = week.getType();
+        round = week.getRound();
+        code = week.getCode();
+        title = week.getTitle();
+        announcement = week.getAnnouncement();
+        intent = week.getIntent();
+        rule = week.getRule();
+        constraints = week.getConstraints();
+        difficulty = week.getDifficulty();
+        status = week.getStatus();
+        Examples examples = week.getExamples();
+        exampleBeginner = examples == null ? null : examples.beginner();
+        exampleRegular = examples == null ? null : examples.regular();
+        exampleExpert = examples == null ? null : examples.expert();
+        opensAt = week.getOpensAt();
+        submissionClosesAt = week.getSubmissionClosesAt();
+        votingClosesAt = week.getVotingClosesAt();
+        resultsAt = week.getResultsAt();
+        notes = week.getNotes();
     }
 
     Week toDomain() {

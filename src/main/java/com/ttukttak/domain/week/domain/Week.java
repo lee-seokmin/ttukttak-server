@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 import static lombok.AccessLevel.PRIVATE;
 
 @Getter
-@Builder(toBuilder = true)
+@Builder
 @AllArgsConstructor(access = PRIVATE)
 public class Week {
     private String id;               // "2026-w47"

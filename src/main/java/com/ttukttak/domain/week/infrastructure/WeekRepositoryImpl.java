@@ -20,7 +20,11 @@ class WeekRepositoryImpl implements WeekRepository {
 
     @Override
     public Week save(Week week) {
-        return jpaRepository.saveAndFlush(WeekJpaEntity.from(week)).toDomain();
+        WeekJpaEntity entity = jpaRepository.findById(week.getId()).orElse(null);
+        if (entity == null) return jpaRepository.saveAndFlush(WeekJpaEntity.from(week)).toDomain();
+        entity.overwrite(week);
+        jpaRepository.flush();
+        return entity.toDomain();
     }
 
     @Override

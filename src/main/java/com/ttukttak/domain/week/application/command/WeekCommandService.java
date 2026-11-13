@@ -18,12 +18,11 @@ public class WeekCommandService {
     private final WeekRepository weekRepository;
     private final ParticipationRepository participationRepository;
 
-    /** id가 같으면 덮어써요. 버튼 누른 횟수는 그대로 둬요. 하나라도 틀리면 모두 취소돼요. */
+    /** id가 같으면 덮어써요. 버튼 누른 횟수는 덮어쓰지 않아요. 하나라도 틀리면 모두 취소돼요. */
     public void importWeeks(List<Week> weeks) {
         for (Week week : weeks) {
             week.validate();
-            long presses = weekRepository.findById(week.getId()).map(Week::getPresses).orElse(0L);
-            weekRepository.save(week.toBuilder().presses(presses).build());
+            weekRepository.save(week);
         }
     }
 
