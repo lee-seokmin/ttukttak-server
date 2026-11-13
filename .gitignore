@@ -45,3 +45,6 @@ docs/db/*
 
 # graphify
 graphify-out
+
+# MacOS
+.DS_Store
