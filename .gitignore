@@ -35,3 +35,13 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# AI
+CLAUDE.md
+
+# docs
+docs/api/*
+docs/db/*
+
+# graphify
+graphify-out

@@ -6,4 +6,4 @@ services:
       - 'POSTGRES_USER=ttukttak'
       - 'POSTGRES_PASSWORD=ttukttak'
     ports:
-      - '5432:5432'
+      - '5432'
