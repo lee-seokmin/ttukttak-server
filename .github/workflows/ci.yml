@@ -60,7 +60,7 @@ jobs:
             build/reports/jacoco/test/html
           retention-days: 7
 
-      # docker.yml이 받아서 이미지로 만들어요.
+      # docker job(docker.yml)이 받아서 이미지로 만들어요.
       - name: jar 넘기기
         if: ${{ github.event_name == 'push' }}
         uses: actions/upload-artifact@v7
@@ -68,3 +68,12 @@ jobs:
           name: app-jar
           path: build/libs/app.jar
           retention-days: 1
+
+  # main에서 테스트가 통과하면 같은 실행 안에서 이미지를 만들어요.
+  docker:
+    if: ${{ github.event_name == 'push' }}
+    needs: build
+    permissions:
+      contents: read
+      packages: write # ghcr.io에 이미지 올리기
+    uses: ./.github/workflows/docker.yml
