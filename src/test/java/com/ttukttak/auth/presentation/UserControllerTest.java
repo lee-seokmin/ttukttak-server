@@ -41,6 +41,11 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.user.bio").value("작게 만들어요."))
                 .andExpect(jsonPath("$.user.links.blog").value("https://jh.park.dev"));
 
+        mvc.perform(patch("/api/v1/users/jh.park").contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"name\": \"   \" }"))
+                .andExpect(status().isUnprocessableContent())
+                .andExpect(jsonPath("$.error.fields.name").value("이름을 입력해 주세요."));
+
         mvc.perform(get("/api/v1/users/jh.park"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.user.joinedAt").value(org.hamcrest.Matchers.endsWith("+09:00")));
