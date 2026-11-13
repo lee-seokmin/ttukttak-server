@@ -11,6 +11,12 @@ spring:
     time-zone: Asia/Seoul
     deserialization:
       fail-on-unknown-properties: true
+    # API는 enum을 소문자로 주고받아요 ("theme", "building")
+    mapper:
+      accept-case-insensitive-enums: true
+    datatype:
+      enum:
+        write-enums-to-lowercase: true
   security:
     oauth2:
       client:
