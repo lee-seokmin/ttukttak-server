@@ -66,6 +66,12 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.error.fields.handle").exists())
                 .andExpect(jsonPath("$.error.fields.name").exists());
 
+        String longUrl = "https://a.dev/" + "a".repeat(2048);
+        mvc.perform(post("/api/v1/users").contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"githubId\": 1003, \"handle\": \"long.url\", \"name\": \"긴주소\", \"avatarUrl\": \"" + longUrl + "\" }"))
+                .andExpect(status().isUnprocessableContent())
+                .andExpect(jsonPath("$.error.fields.avatarUrl").exists());
+
         mvc.perform(post("/api/v1/users").contentType(MediaType.APPLICATION_JSON).content("{ \"unknown\": 1 }"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.error.code").value("invalid_request"));

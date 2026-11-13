@@ -31,15 +31,16 @@ class UserJpaEntity {
     @Column(nullable = false, length = 20)
     private String name;
 
+    @Column(length = 2048)
     private String avatarUrl;
 
     @Column(nullable = false, length = 160)
     private String bio;
 
-    @Column(name = "link_github")
+    @Column(name = "link_github", length = 2048)
     private String githubLink;
 
-    @Column(name = "link_blog")
+    @Column(name = "link_blog", length = 2048)
     private String blogLink;
 
     @Enumerated(EnumType.STRING)

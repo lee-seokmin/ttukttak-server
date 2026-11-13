@@ -1,6 +1,7 @@
 package com.ttukttak.common.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,8 +41,14 @@ public class GlobalExceptionHandler {
 
     /** 동시에 같은 값으로 가입하는 등 DB 고유 제약에 걸렸을 때 */
     @ExceptionHandler(DataIntegrityViolationException.class)
-    ResponseEntity<ApiError> handleConflict(DataIntegrityViolationException e) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(ApiError.of("conflict", "이미 있는 값이에요."));
+    ResponseEntity<ApiError> handleIntegrity(DataIntegrityViolationException e) {
+        if (e.getCause() instanceof ConstraintViolationException cve
+                && cve.getKind() == ConstraintViolationException.ConstraintKind.UNIQUE) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ApiError.of("conflict", "이미 있는 값이에요."));
+        }
+        // 길이 초과, NOT NULL 같은 위반은 요청 검사가 놓친 서버 버그예요.
+        log.error("Data integrity violation", e);
+        return ResponseEntity.internalServerError().body(ApiError.of("internal", "잠시 후 다시 시도해 주세요."));
     }
 
     @ExceptionHandler(Exception.class)

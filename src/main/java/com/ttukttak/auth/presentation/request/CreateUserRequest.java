@@ -17,6 +17,6 @@ public record CreateUserRequest(
         @Size(max = 20, message = "이름은 20자까지 써요.")
         String name,
 
-        String avatarUrl
+        @Size(max = 2048, message = "주소는 2048자까지 써요.") String avatarUrl
 ) {
 }
