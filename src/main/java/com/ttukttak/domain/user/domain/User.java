@@ -35,12 +35,13 @@ public class User {
     private Instant updatedAt;
     private Instant deletedAt;
 
-    public static User create(Long githubId, String handle, String name, String avatarUrl) {
+    public static User create(Long githubId, String handle, String name, String avatarUrl, String githubLink) {
         return User.builder()
                 .githubId(githubId)
                 .handle(handle)
                 .name(name)
                 .avatarUrl(avatarUrl)
+                .githubLink(githubLink)
                 .bio("")
                 .role(Role.MEMBER)
                 .build();

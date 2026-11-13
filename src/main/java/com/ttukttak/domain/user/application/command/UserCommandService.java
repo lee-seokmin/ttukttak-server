@@ -18,10 +18,11 @@ public class UserCommandService {
 
     private final UserRepository userRepository;
 
-    /** GitHub 로그인. 처음이면 GitHub 아이디로 handle을 만들어요(겹치면 숫자를 붙여요). */
+    /** GitHub 로그인. 처음이면 GitHub 아이디로 handle과 GitHub 링크를 만들어요(handle이 겹치면 숫자를 붙여요). */
     public User loginWithGithub(Long githubId, String login, String name, String avatarUrl) {
         return userRepository.findByGithubId(githubId).orElseGet(() -> userRepository.save(
-                User.create(githubId, uniqueHandle(login), nameOf(name, login), avatarUrl)));
+                User.create(githubId, uniqueHandle(login), nameOf(name, login), avatarUrl,
+                        "https://github.com/" + login)));
     }
 
     public User updateProfile(UUID id, String name, String bio, String githubLink, String blogLink) {

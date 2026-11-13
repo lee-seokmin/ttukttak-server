@@ -34,6 +34,7 @@ class MeControllerTest {
         User first = userCommandService.loginWithGithub(1001L, "JH-Park", null, null);
         assertThat(first.getHandle()).isEqualTo("jh-park");
         assertThat(first.getName()).isEqualTo("JH-Park");
+        assertThat(first.getGithubLink()).isEqualTo("https://github.com/JH-Park");
 
         // 같은 GitHub 계정이면 같은 사용자, 아이디가 겹치면 숫자를 붙여요
         assertThat(userCommandService.loginWithGithub(1001L, "JH-Park", null, null).getId()).isEqualTo(first.getId());
