@@ -11,3 +11,19 @@ spring:
     time-zone: Asia/Seoul
     deserialization:
       fail-on-unknown-properties: true
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: ${GITHUB_CLIENT_ID}
+            client-secret: ${GITHUB_CLIENT_SECRET}
+            redirect-uri: "{baseUrl}/api/v1/auth/{registrationId}/callback"
+
+server:
+  servlet:
+    session:
+      timeout: 14d # ponytail: 메모리 세션이라 재시작하면 다시 로그인. 서버 여러 대면 spring-session-jdbc
+      cookie:
+        same-site: lax
+        max-age: 14d

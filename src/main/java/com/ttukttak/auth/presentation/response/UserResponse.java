@@ -1,6 +1,7 @@
 package com.ttukttak.auth.presentation.response;
 
 import com.ttukttak.auth.presentation.common.UserLinks;
+import com.ttukttak.auth.presentation.common.UserSummary;
 import com.ttukttak.domain.user.domain.User;
 
 import java.time.OffsetDateTime;
@@ -25,7 +26,7 @@ public record UserResponse(Profile user, Stats stats) {
                         user.getHandle(),
                         user.getName(),
                         user.getAvatarUrl(),
-                        user.getHandle().substring(0, Math.min(2, user.getHandle().length())).toUpperCase(),
+                        UserSummary.initials(user.getHandle()),
                         user.getBio(),
                         new UserLinks(user.getGithubLink(), user.getBlogLink()),
                         user.getJoinedAt().atZone(KST).toOffsetDateTime()),

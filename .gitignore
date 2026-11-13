@@ -48,3 +48,5 @@ graphify-out
 
 # MacOS
 .DS_Store
+# 로컬 비밀값
+.env

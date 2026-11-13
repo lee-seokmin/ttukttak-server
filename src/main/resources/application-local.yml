@@ -1,5 +1,7 @@
 # DB는 compose.yaml의 Postgres를 Docker Compose 연동이 자동으로 띄우고 연결해요.
 spring:
+  config:
+    import: optional:file:.env[.properties] # GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET
   docker:
     compose:
       skip:

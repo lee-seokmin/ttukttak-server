@@ -7,6 +7,13 @@ spring:
     hibernate:
       ddl-auto: validate
 
+server:
+  forward-headers-strategy: native # 프록시 뒤에서 https 콜백 주소를 만들어요
+  servlet:
+    session:
+      cookie:
+        secure: true
+
 logging:
   level:
     root: warn

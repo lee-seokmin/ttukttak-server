@@ -8,7 +8,7 @@ import java.util.UUID;
 interface UserJpaRepository extends JpaRepository<UserJpaEntity, UUID> {
     Optional<UserJpaEntity> findByHandle(String handle);
 
-    boolean existsByHandle(String handle);
+    Optional<UserJpaEntity> findByGithubId(Long githubId);
 
-    boolean existsByGithubId(Long githubId);
+    boolean existsByHandle(String handle);
 }
