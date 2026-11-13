@@ -7,6 +7,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    defer-datasource-initialization: true # Hibernate가 테이블을 만든 뒤에 db/patch.sql 실행
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:db/patch.sql
 
 logging:
   level:
