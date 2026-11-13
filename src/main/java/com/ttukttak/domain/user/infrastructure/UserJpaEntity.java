@@ -22,7 +22,7 @@ class UserJpaEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true) // 탈퇴하면 null
     private Long githubId;
 
     @Column(nullable = false, unique = true, length = 39)

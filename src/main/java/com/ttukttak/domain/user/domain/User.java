@@ -54,7 +54,10 @@ public class User {
         if (blogLink != null) this.blogLink = blogLink.isEmpty() ? null : blogLink;
     }
 
+    /** handle과 GitHub 계정을 비워서 같은 값으로 다시 가입할 수 있게 해요. */
     public void delete() {
+        this.handle = "~" + id; // 가입 검사(영어 소문자로 시작)를 통과할 수 없는 값이라 겹치지 않아요
+        this.githubId = null;
         this.deletedAt = Instant.now();
     }
 }

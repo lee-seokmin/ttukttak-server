@@ -50,6 +50,10 @@ class UserControllerTest {
         mvc.perform(get("/api/v1/users/jh.park"))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.error.code").value("not_found"));
+
+        // 탈퇴한 handle과 GitHub 계정으로 다시 가입할 수 있어요
+        mvc.perform(post("/api/v1/users").contentType(MediaType.APPLICATION_JSON).content(body))
+                .andExpect(status().isCreated());
     }
 
     @Test
