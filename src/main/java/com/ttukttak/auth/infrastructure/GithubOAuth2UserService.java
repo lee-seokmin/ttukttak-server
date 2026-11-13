@@ -3,6 +3,7 @@ package com.ttukttak.auth.infrastructure;
 import com.ttukttak.domain.user.application.command.UserCommandService;
 import com.ttukttak.domain.user.domain.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -21,12 +22,21 @@ public class GithubOAuth2UserService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest request) {
         OAuth2User github = super.loadUser(request);
-        User user = userCommandService.loginWithGithub(
+        try {
+            return principal(login(github));
+        } catch (DataIntegrityViolationException e) {
+            // 첫 로그인이 동시에 들어와 다른 쪽이 먼저 만들었어요(github_id나 handle 겹침).
+            // 실패한 트랜잭션은 이미 롤백됐으니 새 트랜잭션에서 한 번 더 하면 찾거나 다른 handle로 만들어요.
+            return principal(login(github));
+        }
+    }
+
+    private User login(OAuth2User github) {
+        return userCommandService.loginWithGithub(
                 ((Number) github.getAttributes().get("id")).longValue(),
                 github.getAttribute("login"),
                 github.getAttribute("name"),
                 github.getAttribute("avatar_url"));
-        return principal(user);
     }
 
     /** Authentication.getName()이 우리 사용자 id가 돼요. */
