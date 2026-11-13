@@ -1,0 +1,31 @@
+name: 버그
+description: 의도와 다르게 동작하는 걸 알려줘요
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: 무슨 일이 있었나요
+      description: 기대한 동작과 실제 동작을 같이 써주세요.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: 재현 방법
+      placeholder: |
+        1. POST /api/v1/users { ... }
+        2. ...
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: 로그와 응답
+      description: 에러 로그나 응답 본문을 붙여주세요.
+      render: text
+  - type: dropdown
+    id: profile
+    attributes:
+      label: 환경
+      options: [local, dev, prod]
