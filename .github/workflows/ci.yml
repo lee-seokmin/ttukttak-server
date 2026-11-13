@@ -40,6 +40,8 @@ jobs:
           report_paths: build/test-results/test/*.xml
           check_name: 테스트 결과
           detailed_summary: true
+          # fork PR은 토큰이 읽기 전용이라 체크를 못 만들어요. 그때는 주석과 실행 요약에만 남겨요.
+          annotate_only: ${{ github.event.pull_request.head.repo.fork == true }}
 
       - name: 커버리지 요약
         if: ${{ success() }}
