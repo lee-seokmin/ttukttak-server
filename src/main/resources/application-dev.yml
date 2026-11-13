@@ -6,3 +6,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update # ponytail: Flyway 도입하면 validate로
+    defer-datasource-initialization: true # Hibernate가 테이블을 만든 뒤에 db/patch.sql 실행
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:db/patch.sql
